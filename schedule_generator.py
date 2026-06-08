@@ -6,19 +6,23 @@ from pathlib import Path
 from zoneinfo import ZoneInfo
 
 import requests
+from dotenv import load_dotenv
 
 BASE_DIR = Path(__file__).resolve().parent
 MATCHES_FILE = BASE_DIR / "copa_2026_jogos.json"
+
+load_dotenv(BASE_DIR / ".env")
+
 MAILGUN_DOMAIN = os.getenv("DOMAIN")
 MAILGUN_API_KEY = os.getenv("API_KEY")
-EMAIL_FROM = f"Mailgun Sandbox <postmaster@meuemail.com>"
-EMAIL_TO = "<matheuscz3110@gmail.com>"
+EMAIL_FROM = f"Mailgun Sandbox <postmaster@{MAILGUN_DOMAIN}>"
+EMAIL_TO = "Matheus Cruz <matheuscz3110@gmail.com>"
 REMINDER_MINUTES = 10
 CHECK_INTERVAL_SECONDS = 60
 
 
 def load_matches():
-    with open(MATCHES_FILE, encoding="utf-8") as file:
+    with open(MATCHES_FILE, encoding="utf-8-sig") as file:
         return json.load(file)["matches"]
 
 
@@ -50,6 +54,12 @@ def build_email(match):
 
 
 def send_match_email(match):
+    if not MAILGUN_DOMAIN:
+        raise ValueError("Variável de ambiente DOMAIN não configurada.")
+
+    if not MAILGUN_API_KEY:
+        raise ValueError("Variável de ambiente API_KEY não configurada.")
+
     return requests.post(
         f"https://api.mailgun.net/v3/{MAILGUN_DOMAIN}/messages",
         auth=("api", MAILGUN_API_KEY),
