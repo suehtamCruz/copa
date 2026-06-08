@@ -54,15 +54,15 @@ def build_email(match):
 
 
 def send_match_email(match):
-    if not DOMAIN:
+    if not MAILGUN_DOMAIN:
         raise ValueError("Variável de ambiente DOMAIN não configurada.")
 
-    if not API_KEY:
+    if not MAILGUN_API_KEY:
         raise ValueError("Variável de ambiente API_KEY não configurada.")
 
     return requests.post(
-        f"https://api.mailgun.net/v3/{DOMAIN}/messages",
-        auth=("api", API_KEY),
+        f"https://api.mailgun.net/v3/{MAILGUN_DOMAIN}/messages",
+        auth=("api", MAILGUN_API_KEY),
         data=build_email(match),
         timeout=30,
     )

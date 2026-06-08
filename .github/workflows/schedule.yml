@@ -8,7 +8,7 @@ on:
 jobs:
   send-reminders:
     runs-on: ubuntu-latest
- 
+    environment: dev
     env:
       DOMAIN: ${{ secrets.DOMAIN }}
       API_KEY: ${{ secrets.API_KEY }}
