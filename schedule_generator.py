@@ -9,8 +9,8 @@ import requests
 
 BASE_DIR = Path(__file__).resolve().parent
 MATCHES_FILE = BASE_DIR / "copa_2026_jogos.json"
-MAILGUN_DOMAIN = 'sandbox49f1250bdeb647d1a93c4e0226d09a79.mailgun.org'
-MAILGUN_API_KEY ='d9338c9d147f9a1fd6d9fe18baa20c99-d2d7ea9a-f158948e'
+MAILGUN_DOMAIN = os.getenv("DOMAIN")
+MAILGUN_API_KEY = os.getenv("API_KEY")
 EMAIL_FROM = f"Mailgun Sandbox <postmaster@meuemail.com>"
 EMAIL_TO = "<matheuscz3110@gmail.com>"
 REMINDER_MINUTES = 10

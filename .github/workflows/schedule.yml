@@ -1,0 +1,29 @@
+name: Send match email reminders
+ 
+on:
+  schedule:
+    - cron: "*/10 * * * *"
+  workflow_dispatch:
+ 
+jobs:
+  send-reminders:
+    runs-on: ubuntu-latest
+ 
+    env:
+      DOMAIN: ${{ secrets.DOMAIN }}
+      API_KEY: ${{ secrets.API_KEY }}
+ 
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+ 
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+ 
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+ 
+      - name: Run scheduler
+        run: python schedule_generator.py
